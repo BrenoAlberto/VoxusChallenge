@@ -1,67 +1,43 @@
-class DateHelper {
-    private readonly daysInMonth: Map<number, number> = new Map([   
-        [1, 31],
-        [2, 28],
-        [3, 31],
-        [4, 30],
-        [5, 31],
-        [6, 30],
-        [7, 31],
-        [8, 31],
-        [9, 30],
-        [10, 31],
-        [11, 30],
-        [12, 31]
-    ]);
- 
+export class DateHelper {
+    private readonly daysInMonth: number[] = [0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+
     public getDayNumberInYear(date: string): number {
-        this.ensureIsValidDate(date);
-        const year = date.substring(0, 4);
-        const monthInt = parseInt(date.substring(5, 7));
-        const dayInt = parseInt(date.substring(8, 10));
-        const daysInMonth = this.getDaysInMonth(monthInt);
-        if (dayInt > daysInMonth) throw new Error("Invalid date format");
-        return dayInt + this.getSumOfDaysUntilMonth(monthInt, year);
-    }
+        this.ensureFormatConstraints(date);
 
+        const year = parseInt(date.substring(0, 4));
+        const month = parseInt(date.substring(5, 7));
+        const day = parseInt(date.substring(8, 10));
+        this.ensureRangeConstraints(day, month, year);
 
-    private ensureIsValidDate(date: string): void {
-        if (date.length !== 10) {
-            throw new Error("Invalid date format");
-        }
-        if (date[4] !== "-" || date[7] !== "-") {
-            throw new Error("Invalid date format");
-        }
-        for (let i = 0; i < date.length; i++) {
-            if (i === 4 || i === 7) {
-                continue;
-            }
-            if (isNaN(parseInt(date[i]))) {
-                throw new Error("Invalid date format");
-            }
-        }
-    }
+        let dayOfYear = day;
 
-    private getDaysInMonth(month: number): number {
-        return this.daysInMonth.get(month) || 0;
-    }
-
-    private getSumOfDaysUntilMonth(month: number, year: string): number {
-        let sum = 0;
         for (let i = 1; i < month; i++) {
-            sum += this.getDaysInMonth(i);
+            dayOfYear += this.getDaysInMonth(i, year);
         }
-        if (this.isLeapYear(parseInt(year)) && month > 2) {
-            sum++;
+
+        return dayOfYear;
+    }
+
+    private ensureFormatConstraints(date: string): void {
+        if (!/^\d{4}-\d{2}-\d{2}$/.test(date)) {
+            throw new Error("Invalid date format");
         }
-        return sum;
+    }
+
+    private ensureRangeConstraints(day: number, month: number, year: number): void {
+        if (year < 1900 || year > 2022 || month < 1 || month > 12 || day < 1 || day > this.getDaysInMonth(month, year)) {
+            throw new Error("Invalid date format");
+        }
+    }
+
+    private getDaysInMonth(month: number, year: number): number {
+        if (month === 2 && this.isLeapYear(year)) {
+            return 29;
+        }
+        return this.daysInMonth[month];
     }
 
     private isLeapYear(year: number): boolean {
         return year % 4 === 0 && (year % 100 !== 0 || year % 400 === 0);
     }
 }
-
-const dateHelper = new DateHelper();
-console.log(dateHelper.getDayNumberInYear("2019-01-09"));
-console.log(dateHelper.getDayNumberInYear("2019-02-10"));

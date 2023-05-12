@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "performance": "ts-node -r ./performance/runner.ts"
+    "performance": "ts-node ./performance/runner.ts"
   },
   "author": "",
   "license": "ISC",

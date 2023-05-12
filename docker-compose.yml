@@ -1,0 +1,28 @@
+version: '3'
+
+services:
+  app:
+    container_name: voxus-challenge-express
+    build:
+      context: .
+      args:
+        - NODE_ENV=production
+    ports:
+      - '3000:3000'
+    command: npm start
+
+  test:
+    container_name: voxus-challenge-test
+    build:
+      context: .
+      args:
+        - NODE_ENV=test
+    command: npm test
+
+  performance:
+    container_name: voxus-challenge-performance
+    build:
+      context: .
+      args:
+        - NODE_ENV=test
+    command: npm performance

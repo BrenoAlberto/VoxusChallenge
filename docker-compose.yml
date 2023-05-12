@@ -25,4 +25,4 @@ services:
       context: .
       args:
         - NODE_ENV=test
-    command: npm performance
+    command: npm run performance

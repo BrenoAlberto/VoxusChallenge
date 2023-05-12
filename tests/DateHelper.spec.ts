@@ -19,4 +19,23 @@ describe('DateHelper', () => {
             expect(dateHelper.getDayNumberInYear(date)).toBe(expectedResult);
         });
     });
+
+    describe.each([
+        '2019-1-01',
+        '2019-13-01',
+        '2019-02-30',
+        '2019-00-01',
+        '2019-01-00',
+        '2019/01/01',
+        '1900-02-29',
+        '1899-12-31',
+        '2023-01-01',
+        "abcd-01-01",
+        new Date().toISOString(),
+        new Date().toString()
+    ])('getDayNumberInYear should throw error for invalid date format %s', (invalidDate) => {
+        it('throws an error', () => {
+            expect(() => dateHelper.getDayNumberInYear(invalidDate)).toThrow('Invalid date format');
+        });
+    });
 });

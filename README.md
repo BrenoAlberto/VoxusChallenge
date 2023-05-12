@@ -2,24 +2,28 @@
 
 Voxus Challenge I - Lógica
 
-## Running the App
+## Running Services
+
+in case the command `docker compose` doesn't work, you can try `docker-compose` instead.
+
+### Running the App
 
 ```bash
-docker-compose up app
+docker compose up app
 ```
 
 The API should start at `http://localhost:3000`.
 
-## Running the Tests
+### Running the Tests
 
 ```bash
-docker-compose up test
+docker compose up test
 ```
 
-## Running the Performance Tests
+### Running the Performance Tests
 
 ```bash
-docker-compose up performance
+docker compose up performance
 ```
 
 ## API Usage
